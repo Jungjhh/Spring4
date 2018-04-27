@@ -4,18 +4,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.omg.CORBA.PRIVATE_MEMBER;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
-import org.springframework.context.support.StaticApplicationContext;
 
 import assembler.Assembler;
 import spring.AlreadyExistingMemberException;
 import spring.ChangePasswordService;
 import spring.IdPasswordNotMatchingException;
+import spring.MemberInfoPrinter;
+import spring.MemberListPrinter;
 import spring.MemberNotFoundException;
 import spring.MemberRegisterService;
 import spring.RegisterRequest;
+import spring.VersionPrinter;
 
 public class MainForSpring {
 	
@@ -24,7 +25,10 @@ public class MainForSpring {
 	
 	public static void main(String[] args) throws IOException{
 		
-		ctx = new GenericXmlApplicationContext("classpath:appCtx.xml");
+		/*ctx = new GenericXmlApplicationContext("classpath:appCtx.xml");*/
+		
+		String[] conf = {"classpath:configImport.xml"};
+		ctx = new GenericXmlApplicationContext(conf);
 				
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		
@@ -44,6 +48,15 @@ public class MainForSpring {
 				processChangeCommand(command.split(" "));
 				
 				continue;
+			}else if(command.equals("list")) {
+				processListCommand();
+				continue;
+			}else if(command.startsWith("info")) {
+				processInfoCommand(command.split(" "));
+				continue;
+			}else if(command.equals("version")) {
+				processVersionCommand();
+				continue;
 			}
 			
 			printHelp();
@@ -52,7 +65,7 @@ public class MainForSpring {
 		
 	}
 	
-	private static Assembler assembler = new Assembler();
+	/*private static Assembler assembler = new Assembler();*/
 	
 	private static void processNewCommand(String[] arg) {
 		if(arg.length!=5) {
@@ -98,12 +111,39 @@ public class MainForSpring {
 		}
 	}
 	
+	private static void processListCommand() {
+		
+		MemberListPrinter listPrinter = ctx.getBean("listPrinter", MemberListPrinter.class);
+		listPrinter.printAll();
+		
+	}
+	
+	private static void processInfoCommand(String[] arg) {
+		if(arg.length!=2) {
+			printHelp();
+			return;
+		}
+		
+		MemberInfoPrinter infoPrinter = ctx.getBean("infoPrinter", MemberInfoPrinter.class);
+		infoPrinter.printMemberInfo(arg[1]);
+	
+	}
+	
+	private static void processVersionCommand() {
+		VersionPrinter versionPrinter = ctx.getBean("versionPrinter", VersionPrinter.class);
+		versionPrinter.print();
+	}
+	
+	
+	
 	private static void printHelp() {
 		System.out.println();
 		System.out.println("잘못된 명령입니다. 아래 명령어 사용법을 확인하세요.");
 		System.out.println("----명령어 사용법----");
 		System.out.println("new 이메일 이름 암호 암호확인");
 		System.out.println("change 이메일 현재비번 변경비번");
+		System.out.println("list");
+		System.out.println("info 이메일");
 		System.out.println();
 	}
 	
