@@ -27,7 +27,7 @@ public class ExeTimeAspect2 {
 		} finally {
 			long finish = System.nanoTime();
 			Signature sig = joinPoint.getSignature();
-			System.out.printf("% s.%s(%s, arg1) 실행시간 : %d ns\n", joinPoint.getTarget().getClass().getSimpleName(), sig.getName(), Arrays.toString(joinPoint.getArgs()),(finish-start));
+			System.out.printf("%s.%s(%s, arg1) 실행시간 : %d ns\n", joinPoint.getTarget().getClass().getSimpleName(), sig.getName(), Arrays.toString(joinPoint.getArgs()),(finish-start));
 		}
 	}
 	
