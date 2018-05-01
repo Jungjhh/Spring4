@@ -47,7 +47,7 @@ public class MainForMemberDao {
 		System.out.println("-----updateMember");
 		Member member = memberDao.selectByEmail("jung@jung.com");
 		String oldPw = member.getPassword();
-		String newPw = Double.toHexString(Math.random());
+		String newPw = "1234";
 		member.changePassword(oldPw, newPw);
 		
 		memberDao.update(member);
