@@ -22,9 +22,9 @@ public class MainForMemberDao {
 		
 		memberDao = ctx.getBean("memberDao", MemberDao.class);
 
-		selectAll();
+		selectAll();/*
 		updateMember();
-		insertMember();
+		insertMember();*/
 
 		ctx.close();
 		

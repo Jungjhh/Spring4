@@ -1,5 +1,6 @@
 package spring;
 
-public class IdPasswordNotMatchingException extends RuntimeException {
+public class IdPasswordNotMatchingException extends RuntimeException{
 	
+
 }
